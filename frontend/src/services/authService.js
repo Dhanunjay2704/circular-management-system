@@ -1,7 +1,7 @@
 // src/services/authService.js
 import axios from 'axios';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/auth`;
+const API_URL = `${process.env.REACT_APP_API_URL || 'https://circular-management-backend.onrender.com'}/api/auth`;
 
 const login = async (email, password) => {
   const res = await axios.post(`${API_URL}/login`, { email, password });
