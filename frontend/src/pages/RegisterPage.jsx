@@ -1,6 +1,7 @@
 // src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService';
 import { FiUser, FiMail, FiLock, FiUsers, FiBriefcase, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const RegisterPage = () => {
@@ -30,23 +31,11 @@ const RegisterPage = () => {
     setSuccess('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || 'Registration failed');
-        return;
-      }
-
+      const data = await authService.register(formData);
       setSuccess('Registration successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      setError('Something went wrong. Try again later.');
+      setError(err.response?.data?.message || 'Something went wrong. Try again later.');
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { FiUser, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import authService from '../services/authService';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -30,26 +31,14 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-        return;
-      }
-
-      const data = await response.json();
+      const data = await authService.login(email, password);
       login(data.user, data.token);
 
       if (data.user.role === 'admin') navigate('/admin');
       else if (data.user.role === 'faculty') navigate('/faculty');
       else navigate('/student');
     } catch (err) {
-      setError('Login failed. Please try again later.');
+      setError(err.response?.data?.message || 'Login failed. Please try again later.');
     }
   };
 

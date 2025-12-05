@@ -23,7 +23,7 @@ const CircularPreview = ({ circular }) => {
         <p>
           <strong>Attachment:</strong>{' '}
           <a
-            href={`http://localhost:5000/${circular.attachmentUrl}`}
+            href={`${process.env.REACT_APP_API_URL}/${circular.attachmentUrl}`}
             target="_blank"
             rel="noopener noreferrer"
           >
