@@ -15,3 +15,13 @@ services:
         sync: false
       - key: CLIENT_URL
         sync: false
+  - type: web
+    name: circular-management-frontend
+    runtime: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s build -l 5173
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://circular-management-backend.onrender.com
